@@ -66,7 +66,7 @@
 
 (defn home []
       (let [messages (r/atom nil)]
-           (get-messages messages)
+        (get-messages messages)
            (fn []
                [:section.section>div.container
                 [:h1.title "Guestbook"]
