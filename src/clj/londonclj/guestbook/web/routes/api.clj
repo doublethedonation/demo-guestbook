@@ -21,6 +21,7 @@
     {:get health/healthcheck!}]
    ["/create"
     {:post {:parameters {:body {:name string?
+                                :subject string?
                                 :message string?}}
             :handler guestbook/save-message!}}]
    ["/list"

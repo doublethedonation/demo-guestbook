@@ -4,11 +4,11 @@
             [londonclj.guestbook.web.routes.utils :as utils]))
 
 (defn save-message!
-  [{{:keys [name message]} :body-params :as request}]
-  (log/debug "saving message" name message)
+  [{{:keys [name subject message]} :body-params :as request}]
+  (log/debug "saving message" name subject message)
   (let [{:keys [query-fn]} (utils/route-data request)]
     (try
-      (query-fn :save-message! {:name name :message message})
+      (query-fn :save-message! {:name name :subject subject :message message})
       (http-response/ok)
       (catch Exception e
         (log/error e "failed to save message!")

@@ -9,13 +9,16 @@
 
 (defn message-list [messages]
   [:ul.content
-   (for [{:keys [timestamp message name]} @messages]
+   (for [{:keys [id timestamp message name subject]} @messages]
      ^{:key timestamp}
-     [:li
-      [:time (.toLocaleString timestamp)]
-      [:p message]
-      [:p " - " name]
-      [:hr]])])
+     [:<>
+      [:li
+       [:time (.toLocaleString timestamp)]
+       [:br]
+       [:p [:strong subject]]
+       [:p message]
+       [:p " - " name]
+       [:hr]]])])
 
 (defn get-messages [messages]
   (GET "/api/list"
@@ -52,6 +55,13 @@
            :name      :name
            :on-change #(swap! fields assoc :name (-> % .-target .-value))
            :value     (:name @fields)}]]
+        [errors-component errors :subject]
+        [:p "Subject:"
+         [:input.input
+          {:type      :text
+           :name      :subject
+           :on-change #(swap! fields assoc :subject (-> % .-target .-value))
+           :value     (:subject @fields)}]]
         [errors-component errors :message]
         [:p "Message:"
          [:textarea.textarea
