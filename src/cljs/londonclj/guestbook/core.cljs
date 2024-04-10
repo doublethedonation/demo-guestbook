@@ -48,8 +48,9 @@
                    "x-csrf-token" (.-value (.getElementById js/document "token"))}
          :params @fields
          :handler #(do
+                     (swap! messages conj (assoc @fields :timestamp (js/Date.)))
                      (reset! errors nil)
-                     (swap! messages conj (assoc @fields :timestamp (js/Date.))))
+                     (reset! fields {}))
          :error-handler #(do
                            (.log js/console (str %))
                            (reset! errors (get-in % [:response :errors])))}))
