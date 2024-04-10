@@ -7,6 +7,16 @@
 ;; -------------------------
 ;; Views
 
+(defn delete-message [id]
+  (POST "/api/delete"
+        {:params {:id id}
+         :handler #(do
+                     (js/console.log "Delete handler")
+                     )}))
+
+(defn find-my-message [messages id]
+  (filter #(not= id (get % :id)) messages))
+
 (defn message-list [messages]
   [:ul.content
    (for [{:keys [id timestamp message name subject]} @messages]
@@ -18,6 +28,13 @@
        [:p [:strong subject]]
        [:p message]
        [:p " - " name]
+       [:input.button
+        {:type     :button
+         :on-click #(do
+                      (js/console.log "delete!")
+                      (delete-message id)
+                      (swap! messages find-my-message id))
+         :value    "delete"}]
        [:hr]]])])
 
 (defn get-messages [messages]

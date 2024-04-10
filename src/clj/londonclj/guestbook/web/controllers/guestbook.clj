@@ -3,6 +3,17 @@
             [ring.util.http-response :as http-response]
             [londonclj.guestbook.web.routes.utils :as utils]))
 
+(defn delete-message!
+  [{{:keys [id]} :body-params :as request}]
+  (log/debug "deleting message" id)
+  (let [{:keys [query-fn]} (utils/route-data request)]
+    (try
+      (query-fn :delete-message! {:id id})
+      (http-response/ok)
+      (catch Exception e
+        (log/error e "failed to delete message!")
+        (http-response/internal-server-error (.getMessage e))))))
+
 (defn save-message!
   [{{:keys [name subject message]} :body-params :as request}]
   (log/debug "saving message" name subject message)

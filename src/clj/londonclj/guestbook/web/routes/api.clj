@@ -19,6 +19,9 @@
            :handler (swagger/create-swagger-handler)}}]
    ["/health"
     {:get health/healthcheck!}]
+   ["/delete"
+    {:post {:parameters {:body {:id number?}}
+            :handler guestbook/delete-message!}}]
    ["/create"
     {:post {:parameters {:body {:name string?
                                 :subject string?
