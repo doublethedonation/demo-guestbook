@@ -98,8 +98,12 @@
     (fn []
       [:section.section>div.container
        [:h1.title "Guestbook"]
-       [:div.row
+       #_[:div.row
         [:div.span12
+         [message-list messages]]]
+       [:div.card
+        [:h3.card-header "Messages"]
+        [:div.card-body
          [message-list messages]]]
        [:div.row
         [:div.span12
