@@ -21,8 +21,12 @@
     {:get health/healthcheck!}]
    ["/create"
     {:post {:parameters {:body {:name string?
+                                :subject string?
                                 :message string?}}
             :handler guestbook/save-message!}}]
+   ["/delete"
+    {:post {:parameters {:body {:id number?}}
+            :handler guestbook/delete-message!}}]
    ["/list"
     {:get guestbook/list-messages}]])
 

@@ -7,14 +7,34 @@
 ;; -------------------------
 ;; Views
 
+(defn filter-messages-by-id [messages id]
+  (filter #(not= id (:id %)) messages))
+
+(defn delete-message! [messages id]
+  (POST "/api/delete"
+        {:headers {"Accept"       "application/transit+json"
+                   "x-csrf-token" (.-value (.getElementById js/document "token"))}
+         :params {:id id}
+         :handler (fn [_]
+                    (do
+
+                      (swap! messages filter-messages-by-id id)))
+         :error-handler #(do
+                           (.log js/console (str %)))}))
+
 (defn message-list [messages]
   [:ul.content
-   (for [{:keys [timestamp message name]} @messages]
+   (for [{:keys [timestamp message name subject id]} @messages]
      ^{:key timestamp}
      [:li
+      [:p subject]
       [:time (.toLocaleString timestamp)]
       [:p message]
       [:p " - " name]
+      [:input.button
+       {:type     :button
+        :on-click #(delete-message! messages id)
+        :value    "delete"}]
       [:hr]])])
 
 (defn get-messages [messages]
@@ -29,7 +49,10 @@
          :params @fields
          :handler #(do
                      (reset! errors nil)
-                     (swap! messages conj (assoc @fields :timestamp (js/Date.))))
+                     (swap! messages conj (assoc @fields :timestamp (.toLocaleString (js/Date.))))
+                     (reset! fields {:subject ""
+                                     :name ""
+                                     :message ""}))
          :error-handler #(do
                            (.log js/console (str %))
                            (reset! errors (get-in % [:response :errors])))}))
@@ -52,6 +75,12 @@
            :name      :name
            :on-change #(swap! fields assoc :name (-> % .-target .-value))
            :value     (:name @fields)}]]
+        [:p "Subject"
+         [:input.input
+          {:type      :text
+           :name      :subject
+           :on-change #(swap! fields assoc :subject (-> % .-target .-value))
+           :value     (:subject @fields)}]]
         [errors-component errors :message]
         [:p "Message:"
          [:textarea.textarea
