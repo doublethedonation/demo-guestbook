@@ -1,35 +1,22 @@
 # guestbook
 
-Run `clj -M:dev:nrepl` or `make repl`.
+## Front end
 
-Start a [REPL](#repls) in your editor or terminal of choice.
+`npm install`
+`npx shadow-cljs compile app`
+`npx shadow-cljs watch app`
 
-Start the server with:
+## Back end
+
+`make repl`
 
 ```clojure
 (go)
 ```
 
-The default API is available under http://localhost:3000/api
-
-System configuration is available under `resources/system.edn`.
-
-To reload changes:
-
 ```clojure
 (reset)
 ```
-
-For the front end, make sure shadow-cljs is installed
-
-You must then run:
-
-`npx shadow-cljs compile app`
-
-For active development with hot-reloading:
-
-`npx shadow-cljs watch app`
-
 
 ## REPLs
 
