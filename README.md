@@ -1,5 +1,7 @@
 # guestbook
 
+Run `clj -M:dev:nrepl` or `make repl`.
+
 Start a [REPL](#repls) in your editor or terminal of choice.
 
 Start the server with:
@@ -17,6 +19,17 @@ To reload changes:
 ```clojure
 (reset)
 ```
+
+For the front end, make sure shadow-cljs is installed
+
+You must then run:
+
+`npx shadow-cljs compile app`
+
+For active development with hot-reloading:
+
+`npx shadow-cljs watch app`
+
 
 ## REPLs
 
