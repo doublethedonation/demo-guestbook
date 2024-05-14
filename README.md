@@ -3,7 +3,9 @@
 ## Front end
 
 `npm install`
+
 `npx shadow-cljs compile app`
+
 `npx shadow-cljs watch app`
 
 ## Back end
